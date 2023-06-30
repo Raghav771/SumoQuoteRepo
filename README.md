@@ -1,5 +1,5 @@
 Clone the project:
-Branch Name: main
+Branch Name: master
 
 Required for setup:
 
@@ -31,10 +31,6 @@ Src/test/java/com/runner/RunUITests class
 Execute the Runner class
 
 Note : Please update the email to your email id on the feature file and manually verify once the user is registered successfully
-
-or
-
-Navigate to careers feature file right click on any scenario and run the test.
 
 Reports would be generated under :
 /target/cucumber-html-report
