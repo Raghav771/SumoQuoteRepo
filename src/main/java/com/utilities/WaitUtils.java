@@ -5,7 +5,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class WaitUtils {
+
+public class WaitUtils
+{
 
     WebDriver driver;
 
@@ -37,7 +39,7 @@ public class WaitUtils {
     {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeout);
-            return  wait.until(ExpectedConditions.visibilityOf(ele));
+            return  wait.until(ExpectedConditions.elementToBeClickable(ele));
         }catch (Exception e)
         {
             e.printStackTrace();

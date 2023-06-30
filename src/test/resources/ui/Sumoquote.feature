@@ -15,9 +15,5 @@ Feature: User Registration and login
 
   Examples:
   |email|
-  |raghavreddy771+088@gmail.com|
-
-
-
-
+  |raghavreddy771+%s@gmail.com|
     

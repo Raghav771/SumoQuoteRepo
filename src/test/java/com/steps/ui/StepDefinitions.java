@@ -7,8 +7,12 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
+import java.util.Random;
 
-public class StepDefinitions extends DriverFactory {
+
+public class StepDefinitions extends DriverFactory
+
+{
 
     public TestDataReader testDataReader;
     public SumoQuoteSignupPage signupPage;
@@ -18,8 +22,8 @@ public class StepDefinitions extends DriverFactory {
 
     protected String emailInput;
 
-
-    public StepDefinitions(){
+    public StepDefinitions()
+    {
         testDataReader = new TestDataReader();
         loginPage = new SumoQuoteLoginPage(driver);
         signupPage = new SumoQuoteSignupPage(driver);
@@ -28,10 +32,9 @@ public class StepDefinitions extends DriverFactory {
     }
 
 
-  ///////////
-
     @Given("^User launch the registration page$")
-    public void user_launch_the_registration_page() throws Exception {
+    public void user_launch_the_registration_page() throws Exception
+    {
         String url = testDataReader.readData("registrationUrl");
         driver.navigate().to(url.trim());
     }
@@ -39,8 +42,11 @@ public class StepDefinitions extends DriverFactory {
     @Given("^User fills firstName lastName \"([^\"]*)\" and required details in the registration form$")
     public void user_fills_firstName_lastName_and_required_details_in_the_registration_form(String input) throws Exception {
         emailInput =  input;
+        Random random= new Random();
+        emailInput=String.format(emailInput,random.nextInt(1000));
         signupPage.fillSignUpPage(emailInput);
     }
+
     @Given("^User should be on the email confirmation sent page$")
     public void user_should_be_on_the_email_confirmation_sent_page() throws Exception {
         Assert.assertTrue("confirmation message not exists",signupPage.confirmationMsgExists());
@@ -65,7 +71,7 @@ public class StepDefinitions extends DriverFactory {
     public void user_clicks_on_the_Get_Started_button_and_provide_required_information_in_the_title_page() throws Exception {
        Assert.assertTrue("User login unsuccessful",loginPage.validateLoginSuccess());
         loginPage.clickGetSTartedBtn();
-       // Assert.assertTrue("account info not filled",titlePage.validateTitlePageContents());
+       Assert.assertTrue("account info not filled",titlePage.validateTitlePageContents());
         titlePage.fillTitlePageContent();
     }
 
@@ -84,4 +90,5 @@ public class StepDefinitions extends DriverFactory {
     public void the_user_should_see_a_successful_message() throws Exception {
         Assert.assertTrue("user flow unsuccessful",workPage.validateWeAreOffMsg());
     }
+
 }

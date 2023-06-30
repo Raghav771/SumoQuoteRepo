@@ -1,7 +1,9 @@
 package com.pages;
 
+import com.utilities.Encode;
 import com.utilities.WaitUtils;
 import com.utilities.reader.TestDataReader;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,31 +22,30 @@ public class SumoQuoteSignupPage extends BasePage {
         this.driver = driver;
         waitUtils = new WaitUtils(driver);
         testDataReader = new TestDataReader();
-
     }
 
-
+    //Signup Page OrganizationName
     @FindBy(xpath = "//input[@id='accountName']")
     WebElement organizationName;
 
+    //Signup Page First Name
     @FindBy(xpath = "//input[@id='firstName']")
     WebElement firstName;
 
-
+    //Signup Page Last Name
     @FindBy(xpath = " //input[@id='lastName']")
     WebElement lastName;
 
-
+    //Signup Page Email Address
     @FindBy(xpath = "//input[@id='emailAddress']")
     WebElement email;
 
-
+    //Signup Page Phone Number
     @FindBy(xpath = "//input[@id='phoneNumber']")
     WebElement phoneNumber;
 
     @FindBy(xpath = "//input[@id='Password']")
     WebElement password;
-
 
     @FindBy(xpath = "//input[@id='repeatPassword']")
     WebElement repeatPassword;
@@ -64,26 +65,26 @@ public class SumoQuoteSignupPage extends BasePage {
     @FindBy(xpath = "//p[contains(text(),'OK, we sent you an email containing account verifi')]")
     WebElement signUpConfirmationMsg;
 
-    @FindBy(xpath = "//a[normalize-space()='Back to the Sign In page']")
-    WebElement loginBtn;
+    @FindBy(xpath = "//a[@href='/signIn']")
+    WebElement backToSignInBtn;
 
     public void fillSignUpPage(String emailInput) throws InterruptedException {
+        waitforElementClickable(firstName);
         firstName.sendKeys(testDataReader.readData("firstName"));
         lastName.sendKeys(testDataReader.readData("lastName"));
         organizationName.sendKeys(testDataReader.readData("organizationName"));
         email.sendKeys(emailInput);
         phoneNumber.sendKeys(testDataReader.readData("phoneNumber"));
-        password.sendKeys(testDataReader.readData("password"));
-        repeatPassword.sendKeys(testDataReader.readData("password"));
-        //Select select = new Select(howHeard);
-        //Select select = new Select(howHeardSelection);
-       // WebElement howHeard = driver.findElement(howHeard);
+        String pwd=testDataReader.readData("password");
+        Encode encode=new Encode();
+        password.sendKeys(encode.decrypt(pwd));
+        repeatPassword.sendKeys(encode.decrypt(pwd));
         clickElement(howHeard);
-        Thread.sleep(2000);
-        //WebElement howHeardSelection = driver.findElement(howHeardSelection);
+        waitforElementClickable(howHeardSelection);
         clickElement(howHeardSelection);
-        Thread.sleep(2000);
+        waitforElementClickable(checkbox);
         clickElement(checkbox);
+        waitforElementClickable(saveBtn);
         clickElement(saveBtn);
     }
 
@@ -93,10 +94,14 @@ public class SumoQuoteSignupPage extends BasePage {
     }
 
     public void navigateToLoginPage() throws InterruptedException {
-        //Thread.sleep(15000);
-        WebDriverWait wait=new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOf(loginBtn));
-        loginBtn.click();
+        waitforElementClickable(backToSignInBtn);
+        JavascriptExecutor js = (JavascriptExecutor)(driver);
+        js.executeScript("arguments[0].click()",backToSignInBtn);
+    }
+
+    public void waitforElementClickable(WebElement element){
+        WebDriverWait wait=new WebDriverWait(driver,30);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
 }

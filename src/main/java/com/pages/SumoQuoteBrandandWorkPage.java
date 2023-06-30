@@ -2,6 +2,7 @@ package com.pages;
 
 import com.utilities.WaitUtils;
 import com.utilities.reader.TestDataReader;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,20 +14,20 @@ public class SumoQuoteBrandandWorkPage extends BasePage {
     private WaitUtils waitUtils;
     private final TestDataReader testDataReader;
 
-    public SumoQuoteBrandandWorkPage(WebDriver driver) {
+    public SumoQuoteBrandandWorkPage(WebDriver driver)
+    {
         super(driver);
         this.driver = driver;
         waitUtils = new WaitUtils(driver);
         testDataReader = new TestDataReader();
     }
 
-
     // Brand Page Select brand
-    @FindBy(xpath = "//div[@class='mx-1 my-2 pa-4 v-card v-sheet theme--light elevation-0 rounded-0 selectedTemp']//img[@class='templateImg']")
+    @FindBy(xpath = "//div[img[contains(@src,'Template3.png')]]")
     WebElement selectBrand;
 
     // Brand Page Confirm Button
-    @FindBy(xpath = "//button[@class='btn-sumo-primary mb-5 mt-0 v-btn v-btn--has-bg theme--light elevation-0 v-size--default']//span[@class='v-btn__content'][normalize-space()='Confirm']")
+    @FindBy(xpath = "//button[@class='btn-sumo-primary float-right v-btn v-btn--has-bg theme--light elevation-0 v-size--default']//span[@class='v-btn__content'][normalize-space()='Confirm']")
     WebElement confirmBtn;
 
     // Work Page Commercial Roofing Selection
@@ -46,36 +47,41 @@ public class SumoQuoteBrandandWorkPage extends BasePage {
     WebElement solar;
 
     // Work Page  Finish Button
-    @FindBy(xpath = "(//span[@class='v-btn__content'][normalize-space()='Finish'])[2]")
+    @FindBy(xpath = "//button[@class='btn-sumo-primary float-right v-btn v-btn--has-bg theme--light elevation-0 v-size--default']//span[@class='v-btn__content'][normalize-space()='Finish']")
     WebElement finishBtn;
 
     // Let's Go Button
     @FindBy(xpath = "(//span[normalize-space()=\"Let's Go!\"])[1]")
     WebElement letsgoBtn;
 
-
+    // We are Off Button
     @FindBy(xpath = "(//h4[@class='text-center mt-16 mb-4'])")
     WebElement weAreOffBtn;
 
-
     public void selectAnyBrand()
     {
-
-        selectBrand.click();
+        JavascriptExecutor js = (JavascriptExecutor)(driver);
+        js.executeScript("arguments[0].click()",selectBrand);
+        waitUtils.getElementAfterMediumWait(confirmBtn);
         confirmBtn.click();
     }
 
-    public void selectAnyWork()
-    {
+    public void selectAnyWork() throws InterruptedException {
+        waitUtils.getElementAfterMediumWait(commercialRoofing);
         commercialRoofing.click();
+        waitUtils.getElementAfterMediumWait(firestone);
         firestone.click();
+        waitUtils.getElementAfterMediumWait(productlineOkbtn);
         productlineOkbtn.click();
+        waitUtils.getElementAfterMediumWait(solar);
         solar.click();
+        waitUtils.getElementAfterMediumWait(finishBtn);
         finishBtn.click();
     }
 
-
-    public boolean validateLetsgobtn(){
+    public boolean validateLetsgobtn()
+    {
+        waitUtils.getElementAfterMediumWait(letsgoBtn);
         return letsgoBtn.isDisplayed();
     }
 
@@ -83,9 +89,10 @@ public class SumoQuoteBrandandWorkPage extends BasePage {
         letsgoBtn.click();
     }
 
-    public boolean validateWeAreOffMsg(){
+    public boolean validateWeAreOffMsg()
+    {
+        waitUtils.getElementAfterMediumWait(weAreOffBtn);
         return weAreOffBtn.isDisplayed();
     }
-
 
 }

@@ -19,7 +19,6 @@ public class TestDataReader {
         return this.getClass().getClassLoader().getResource("data/").getPath();
     }
 
-
     private String getTestData(String key) {
         reader.setPropertyFile(getGlobalDataFolderPath() + globaldata + fileExtension);
         String value = reader.getProp(key);
